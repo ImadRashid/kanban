@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:karbanboard/screen/multi_board_list.dart';
 import 'package:karbanboard/screen/splash_screen.dart';
-
-import 'screen/single_board.dart';
+import 'screen/splash_screen.dart';
 
 void main() {
   runApp(MyApp());
@@ -14,13 +13,13 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  int _currentIndex = 0;
-  final _bottomNavigationColor = Colors.blue;
+  // int _currentIndex = 0;
+  // final _bottomNavigationColor = Colors.blue;
 
-  final List<Widget> _examples = [
-    const MultiBoardListExample(),
-    const SingleBoardListExample(),
-  ];
+  // final List<Widget> _examples = [
+  //   const MultiBoardListExample(),
+  //   const SingleBoardListExample(),
+  // ];
 
   @override
   void initState() {
@@ -30,30 +29,35 @@ class _MyAppState extends State<MyApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: Scaffold(
-          appBar: AppBar(
-            title: const Text('AppFlowy Board'),
-          ),
-          body: Container(color: Colors.white, child: _examples[_currentIndex]),
-          bottomNavigationBar: BottomNavigationBar(
-            fixedColor: _bottomNavigationColor,
-            showSelectedLabels: true,
-            showUnselectedLabels: false,
-            currentIndex: _currentIndex,
-            items: [
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.grid_on, color: _bottomNavigationColor),
-                  label: "MultiColumn"),
-              BottomNavigationBarItem(
-                  icon: Icon(Icons.grid_on, color: _bottomNavigationColor),
-                  label: "SingleColumn"),
-            ],
-            onTap: (int index) {
-              setState(() {
-                _currentIndex = index;
-              });
-            },
-          )),
+      debugShowCheckedModeBanner: false,
+      home: SplashScreen(),
+
+      // MultiBoardListExample(),
+
+      //  Scaffold(
+      //     appBar: AppBar(
+      //       title: const Text('AppFlowy Board'),
+      //     ),
+      //     body: Container(color: Colors.white, child: _examples[_currentIndex]),
+      //     bottomNavigationBar: BottomNavigationBar(
+      //       fixedColor: _bottomNavigationColor,
+      //       showSelectedLabels: true,
+      //       showUnselectedLabels: false,
+      //       currentIndex: _currentIndex,
+      //       items: [
+      //         BottomNavigationBarItem(
+      //             icon: Icon(Icons.grid_on, color: _bottomNavigationColor),
+      //             label: "MultiColumn"),
+      //         BottomNavigationBarItem(
+      //             icon: Icon(Icons.grid_on, color: _bottomNavigationColor),
+      //             label: "SingleColumn"),
+      //       ],
+      //       onTap: (int index) {
+      //         setState(() {
+      //           _currentIndex = index;
+      //         });
+      //       },
+      //     )),
     );
   }
 }
