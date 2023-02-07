@@ -9,10 +9,12 @@ class MultiBoardListExample extends StatefulWidget {
 }
 
 class _MultiBoardListExampleState extends State<MultiBoardListExample> {
+// Define Board Controller
+
   final AppFlowyBoardController controller = AppFlowyBoardController(
-    onMoveGroup: (fromGroupId, fromIndex, toGroupId, toIndex) {
-      debugPrint('Move item from $fromIndex to $toIndex');
-    },
+    // onMoveGroup: (fromGroupId, fromIndex, toGroupId, toIndex) {
+    //   debugPrint('Move item from $fromIndex to $toIndex');
+    // },
     onMoveGroupItem: (groupId, fromIndex, toIndex) {
       debugPrint('Move $groupId:$fromIndex to $groupId:$toIndex');
     },
@@ -23,7 +25,7 @@ class _MultiBoardListExampleState extends State<MultiBoardListExample> {
 
   late AppFlowyBoardScrollController boardController;
 
-  AppFlowyGroupData? group1;
+  // AppFlowyGroupData? group1;
 
   var tempList = [
     // TextItem("Card 1"),
@@ -39,29 +41,33 @@ class _MultiBoardListExampleState extends State<MultiBoardListExample> {
 
   @override
   void initState() {
+    // disable group dragging
+    // controller.enableGroupDragging(false);
     boardController = AppFlowyBoardScrollController();
-    group1 = AppFlowyGroupData(
-        id: "To Do",
-        name: "To Do",
-        customData: TextItem("heheh"),
-        items: tempList);
-
-    final group2 = AppFlowyGroupData(
-      id: "In Progress",
-      name: "In Progress",
-      items: <AppFlowyGroupItem>[
-        RichTextItem(title: "Card 10", subtitle: 'Aug 1, 2020 4:05 PM'),
-        TextItem("Card 11"),
-      ],
+    AppFlowyGroupData backlog = AppFlowyGroupData(
+      id: "Backlog",
+      name: "Backlog",
     );
 
-    final group3 = AppFlowyGroupData(
-        id: "Done", name: "Done", items: <AppFlowyGroupItem>[]);
+    AppFlowyGroupData inProgress = AppFlowyGroupData(
+      id: "In Progress",
+      name: "In Progress",
+    );
 
-    controller.addGroup(group1!);
-    controller.addGroup(group2);
-    controller.addGroup(group3);
+    AppFlowyGroupData underReview = AppFlowyGroupData(
+      id: "Underreview",
+      name: "Underreview",
+    );
+    AppFlowyGroupData done = AppFlowyGroupData(
+      id: "Done",
+      name: "Done",
+    );
 
+    controller.addGroup(backlog);
+    controller.addGroup(inProgress);
+    controller.addGroup(done);
+    controller.addGroup(underReview);
+    controller.enableGroupDragging(false);
     super.initState();
   }
 
@@ -72,7 +78,7 @@ class _MultiBoardListExampleState extends State<MultiBoardListExample> {
       // stretchGroupHeight: false,
     );
     return Scaffold(
-      appBar: AppBar(title: Text("Karbon Board")),
+      appBar: AppBar(title: const Text("Kanban Board")),
       body: AppFlowyBoard(
           controller: controller,
           cardBuilder: (context, group, groupItem) {
@@ -83,30 +89,33 @@ class _MultiBoardListExampleState extends State<MultiBoardListExample> {
           },
           boardScrollController: boardController,
           footerBuilder: (context, columnData) {
-            return AppFlowyGroupFooter(
-              icon: const Icon(Icons.add, size: 20),
-              title: const Text('Add New'),
-              height: 50,
-              margin: config.groupItemPadding,
-              onAddButtonClick: () {
-                // setState(() {
-                //   group1!.items.add(TextItem("Hello there"));
-                // });
+            return SafeArea(
+              bottom: true,
+              child: AppFlowyGroupFooter(
+                icon: const Icon(Icons.add, size: 20),
+                title: const Text('Add New'),
+                height: 50,
+                margin: config.groupItemPadding,
+                onAddButtonClick: () {
+                  // setState(() {
+                  //   group1!.items.add(TextItem("Hello there"));
+                  // });
 
-                boardController.scrollToBottom(
-                  columnData.id,
-                );
+                  boardController.scrollToBottom(
+                    columnData.id,
+                  );
 
-                customDailgue(columnTitle: columnData.id);
+                  customDailgue(columnTitle: columnData.id);
 
-                // setState(() {
-                //   tempList.add(TextItem("added new"));
-                // });
+                  // setState(() {
+                  //   tempList.add(TextItem("added new"));
+                  // });
 
-                print(columnData.id.toString());
+                  // print(columnData.id.toString());
 
-                // AppFlowyGroupData(id: )
-              },
+                  // AppFlowyGroupData(id: )
+                },
+              ),
             );
           },
           headerBuilder: (context, columnData) {

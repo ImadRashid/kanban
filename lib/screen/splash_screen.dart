@@ -9,16 +9,10 @@ class SplashScreen extends StatefulWidget {
 
 class _SplashScreenState extends State<SplashScreen> {
   splashScreenDelay() async {
-    await Future.delayed(Duration(seconds: 3));
+    await Future.delayed(const Duration(seconds: 3));
 
-    Navigator.pushReplacement(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-
-                // BoardViewExample()
-
-                MultiBoardListExample()));
+    Navigator.pushReplacement(context,
+        MaterialPageRoute(builder: (context) => MultiBoardListExample()));
   }
 
   @override
