@@ -25,9 +25,8 @@ class SignUpScreen extends StatelessWidget {
       child: Consumer<AuthProvider>(
         builder: (context, model, child) {
           return Scaffold(
-            backgroundColor: Theme.of(context).backgroundColor,
             body: ModalProgressHUD(
-              progressIndicator: CircularProgressIndicator(
+              progressIndicator: const CircularProgressIndicator(
                 color: Color(0xFF568C48),
               ),
               inAsyncCall: model.state == ViewState.busy,
