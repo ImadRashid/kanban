@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:karbanboard/screen/home_screen.dart';
-import 'package:karbanboard/screen/multi_board_list.dart';
+import 'package:karbanboard/screens/multi_board_list.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
