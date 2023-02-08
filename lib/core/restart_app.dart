@@ -1,18 +1,18 @@
 import 'package:flutter/material.dart';
 
-class RestartWidget extends StatefulWidget {
-  RestartWidget({Key? key, required this.child}) : super(key: key);
+class RestartApp extends StatefulWidget {
+  RestartApp({Key? key, required this.child}) : super(key: key);
   final Widget child;
 
   static void restartApp(BuildContext ctx) {
-    ctx.findAncestorStateOfType<_RestartWidgetState>()!.restartApp();
+    ctx.findAncestorStateOfType<_RestartAppState>()!.restartApp();
   }
 
   @override
-  State<RestartWidget> createState() => _RestartWidgetState();
+  State<RestartApp> createState() => _RestartAppState();
 }
 
-class _RestartWidgetState extends State<RestartWidget> {
+class _RestartAppState extends State<RestartApp> {
   Key _key = UniqueKey();
 
   void restartApp() {

@@ -4,15 +4,14 @@ import 'database_services.dart';
 
 class AuthService {
   final _auth = FirebaseAuth.instance;
-  final databaseServices = DatabaseService();
-
+  final _databaseServices = DatabaseService();
   User? firebaseUser;
-  // Stream get userStream => _auth.authStateChanges();
 
   bool isLogin = false;
 
   AppUser appUser = AppUser();
-  AuthServices() {
+
+  AuthService() {
     init();
   }
 
@@ -20,7 +19,7 @@ class AuthService {
     firebaseUser = _auth.currentUser;
     if (firebaseUser != null) {
       isLogin = true;
-      appUser = await databaseServices.getUser(firebaseUser!.uid);
+      appUser = await _databaseServices.getUser(firebaseUser!.uid);
     } else {
       isLogin = false;
     }
@@ -37,7 +36,7 @@ class AuthService {
       isLogin = true;
 
       /// Get user
-      appUser = await databaseServices.getUser(credentials.user!.uid);
+      appUser = await _databaseServices.getUser(credentials.user!.uid);
       return true;
     } catch (e) {
       throw "Could not login:\nError: $e";
@@ -56,8 +55,8 @@ class AuthService {
       appUser.userName = name;
       appUser.userId = credential.user!.uid;
       isLogin = true;
-      await databaseServices.registerUser(appUser);
-      appUser = await databaseServices.getUser(credential.user!.uid);
+      await _databaseServices.registerUser(appUser);
+      appUser = await _databaseServices.getUser(credential.user!.uid);
       return true;
     } catch (e) {
       print('Exception@signUpUser $e');

@@ -1,6 +1,6 @@
 import 'package:appflowy_board/appflowy_board.dart';
 import 'package:flutter/material.dart';
-import 'package:karbanboard/screens/kanban_provider.dart';
+import 'package:karbanboard/ui/screens/board/kanban_provider.dart';
 import 'package:provider/provider.dart';
 
 class KanbanBoard extends StatefulWidget {

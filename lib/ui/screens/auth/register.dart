@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
-import 'package:karbanboard/screens/auth/auth_provider.dart';
+import 'package:karbanboard/ui/screens/auth/auth_provider.dart';
 import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
-import '../../core/enums/view_state.dart';
-import '../custom_widgets/custom_page_route.dart';
-import '../custom_widgets/custom_textfield.dart';
-import '../custom_widgets/password_textfield.dart';
-import '../custom_widgets/rectangular_button.dart';
+import '../../../core/enums/view_state.dart';
+import '../../custom_widgets/custom_page_route.dart';
+import '../../custom_widgets/custom_textfield.dart';
+import '../../custom_widgets/password_textfield.dart';
+import '../../custom_widgets/rectangular_button.dart';
 import 'login.dart';
 
 class SignUpScreen extends StatelessWidget {

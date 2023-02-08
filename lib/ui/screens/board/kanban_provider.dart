@@ -1,8 +1,8 @@
 import 'package:appflowy_board/appflowy_board.dart';
 import 'package:flutter/material.dart';
 
-import '../core/extensions/color.dart';
-import '../core/others/base_view_model.dart';
+import '../../../core/extensions/color.dart';
+import '../../../core/others/base_view_model.dart';
 
 class KanbanBoardProvider extends BaseViewModel {
   final config = AppFlowyBoardConfig(

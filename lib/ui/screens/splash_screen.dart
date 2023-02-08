@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:karbanboard/screens/kanban_board.dart';
-import 'package:karbanboard/screens/no_internet_screen.dart';
+import 'package:karbanboard/ui/screens/board/kanban_board.dart';
+import 'package:karbanboard/ui/screens/no_internet_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-import '../core/services/auth_services.dart';
-import '../core/services/internet_connectivity_service.dart';
-import '../locator.dart';
+import '../../core/services/auth_services.dart';
+import '../../core/services/internet_connectivity_service.dart';
+import '../../locator.dart';
 import 'auth/login.dart';
 
 class SplashScreen extends StatefulWidget {

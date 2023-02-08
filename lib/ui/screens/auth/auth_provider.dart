@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:karbanboard/core/others/base_view_model.dart';
-import '../../core/enums/view_state.dart';
-import '../../core/services/auth_services.dart';
-import '../../core/services/database_services.dart';
-import '../../locator.dart';
+import 'package:karbanboard/ui/screens/board/kanban_board.dart';
+import '../../../core/enums/view_state.dart';
+import '../../../core/services/auth_services.dart';
+import '../../../core/services/database_services.dart';
+import '../../../locator.dart';
+import '../../others/snackbars.dart';
 
 class AuthProvider extends BaseViewModel {
   final _authService = locator<AuthService>();
@@ -35,39 +38,54 @@ class AuthProvider extends BaseViewModel {
   /// Login user
   ///
   loginUser() async {
-    try {
-      setState(ViewState.busy);
-      if (formKey.currentState!.validate()) {
-        await _authService.loginUser(
+    if (formKey.currentState!.validate()) {
+      try {
+        setState(ViewState.busy);
+
+        bool login = await _authService.loginUser(
           emailController.text,
           passwordController.text,
         );
+        if (login) {
+          Get.offAll(() => const KanbanBoard());
+        }
+      } catch (e) {
+        print("$e, login error");
+        showCustomSnackBar(
+          "Error",
+          "$e",
+        );
       }
-    } catch (e) {
-      print("$e, login error");
+      setState(ViewState.idle);
     }
-    setState(ViewState.idle);
   }
 
   ///
   /// Register user
   ///
   registerUser() async {
-    try {
-      if (formKey.currentState!.validate()) {
+    if (formKey.currentState!.validate()) {
+      try {
         setState(ViewState.busy);
-        await _authService.registerUser(
+        bool login = await _authService.registerUser(
           emailController.text,
           passwordController.text,
           nameController.text,
         );
+        if (login) {
+          Get.offAll(() => const KanbanBoard());
+        }
 
         // setState(ViewState.idle);
+      } catch (e) {
+        print("register Error: $e");
+        showCustomSnackBar(
+          "Error",
+          "$e",
+        );
       }
-    } catch (e) {
-      print("register Error: $e");
+      setState(ViewState.idle);
     }
-    setState(ViewState.idle);
   }
 
   termsAndConditions(value) {

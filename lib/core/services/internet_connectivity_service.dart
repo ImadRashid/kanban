@@ -1,6 +1,6 @@
 import 'package:connectivity_plus/connectivity_plus.dart';
 import 'dart:io';
-import '../../screens/others/snackbars.dart';
+import '../../ui/others/snackbars.dart';
 
 /// An Independent Service that checks Internet Connection on:
 /// - Fresh App Start
@@ -33,7 +33,7 @@ class InternetConnectivityService {
   /// [Function] that starts internet connection services
   void init() async {
     // listen to network change
-    await checkInternet();
+    await setupStream();
     // check if the connected network is working or not.
     await checkInternetWorks();
   }
@@ -43,19 +43,19 @@ class InternetConnectivityService {
   /// This function only checks if the mobile is connected to a network such as WiFi, Data etc.
   /// This does not guarantee that the internet from Wifi or Datasource will work
   ///
-  Future<void> checkInternet() async {
+  Future<void> setupStream() async {
     // Listens to network change
     Connectivity().onConnectivityChanged.listen((ConnectivityResult result) {
       // store connectivity result
       connectivity = result;
       // check if it is not fresh Start than show top snackbar
-      if (!firstTime) {
-        showInternetConnectionSnackBar(
-          isOnline: result != ConnectivityResult.none,
-        );
-      }
-      firstTime = false;
-      if (result != ConnectivityResult.none) {}
+      // if (firstTime) {
+      //   showInternetConnectionSnackBar(
+      //     isOnline: result != ConnectivityResult.none,
+      //   );
+      // }
+      // firstTime = false;
+      // if (result != ConnectivityResult.none) {}
     });
   }
 

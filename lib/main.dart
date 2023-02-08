@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
+import 'package:karbanboard/core/restart_app.dart';
 import 'package:karbanboard/locator.dart';
-import 'package:karbanboard/screens/kanban_provider.dart';
-import 'package:karbanboard/screens/splash_screen.dart';
+import 'package:karbanboard/ui/screens/board/kanban_provider.dart';
+import 'package:karbanboard/ui/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 import 'firebase_options.dart';
 
@@ -29,15 +30,18 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
-      providers: [
-        ChangeNotifierProvider(
-          create: (context) => KanbanBoardProvider(),
+    return RestartApp(
+      child: MultiProvider(
+        providers: [
+          ChangeNotifierProvider(
+            create: (context) => KanbanBoardProvider(),
+            lazy: true,
+          ),
+        ],
+        child: GetMaterialApp(
+          debugShowCheckedModeBanner: false,
+          home: SplashScreen(),
         ),
-      ],
-      child: GetMaterialApp(
-        debugShowCheckedModeBanner: false,
-        home: SplashScreen(),
       ),
     );
   }

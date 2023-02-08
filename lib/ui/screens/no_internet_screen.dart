@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import '../core/restart_app.dart';
+import '../../core/restart_app.dart';
 
 /// A [Screen] or [View] made of [StatelessWidget] that is only shown when there is
 /// an [error] in [API] request.
@@ -20,7 +20,7 @@ class NoInternetScreen extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             //Error Image
-            Image.asset("assets/svg_icons/no_internet.png"),
+            // Image.asset("assets/svg_icons/no_internet.png"),
             //Error Message
             Text(
               "no_internet_connection".tr,
@@ -39,7 +39,7 @@ class NoInternetScreen extends StatelessWidget {
             // reset current app state
             await Get.deleteAll(force: true);
             // restart app
-            RestartWidget.restartApp(Get.context!);
+            RestartApp.restartApp(Get.context!);
             // reset get state
             Get.reset();
           },

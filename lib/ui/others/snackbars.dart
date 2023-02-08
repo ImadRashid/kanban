@@ -28,14 +28,18 @@ void showInternetConnectionSnackBar({required bool isOnline}) {
 /// - [title] of type [String]
 /// - [textColor] of type [Color]
 /// - [duration] of type [Duration]
-void showCustomSnackBar(String title, String message, Color textColor,
-    {Duration duration = const Duration(seconds: 3)}) {
+void showCustomSnackBar(
+  String title,
+  String message, {
+  Duration duration = const Duration(seconds: 3),
+  Color textColor = Colors.white,
+}) {
   Get.closeAllSnackbars();
   Get.snackbar(
     title.tr,
     message.tr,
     snackPosition: SnackPosition.BOTTOM,
-    backgroundColor: Colors.white,
+    backgroundColor: Colors.black,
     colorText: textColor,
     borderRadius: 0,
     margin: EdgeInsets.zero,
