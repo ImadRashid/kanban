@@ -75,72 +75,75 @@ class KanbanBoard extends StatelessWidget {
 
                       // customDailgue(columnTitle: columnData.id);
                       await Get.bottomSheet(
-                        Container(
-                          padding: EdgeInsets.all(20),
-                          color: Colors.white,
-                          // height: 300,
-                          child: Column(
-                            children: [
-                              DropdownButton(
-                                value: model.newIssueDropDownValue,
-                                items: [
-                                  "Backlog",
-                                  "In Progress",
-                                  "Underreview",
-                                  "Done"
-                                ].map((e) {
-                                  return DropdownMenuItem(
-                                    value: e,
-                                    child: Text(e),
-                                  );
-                                }).toList(),
-                                onChanged: (v) {
-                                  model.newIssueDropDownValue = v;
-                                  model.notifyListeners();
-                                  print(v);
-                                  print(model.newIssueDropDownValue);
-                                },
-                              ),
-                              CustomTextField(
-                                hintText: "title",
-                                onChanged: (newValue) {
-                                  model.newIssueTitle = newValue;
-                                },
-                              ),
-                              const SizedBox(
-                                height: 20,
-                              ),
-                              CustomTextField(
-                                hintText: "Description",
-                                maxLines: 3,
-                                onChanged: (newValue) {
-                                  model.newIssueDescription = newValue;
-                                },
-                              ),
-                              ElevatedButton(
-                                onPressed: () {
-                                  print(
-                                    model.newIssueDropDownValue!,
-                                  );
-                                  model.addIssue(
-                                    ticket: TicketModel(
-                                      title: model.newIssueTitle!,
-                                      description: model.newIssueDescription!,
-                                      createdAt: DateTime.now().toString(),
-                                      status: model.newIssueDropDownValue!,
-                                    ),
-                                  );
-                                },
-                                child: Container(
-                                  padding: const EdgeInsets.only(
-                                    top: 20,
-                                  ),
-                                  child: const Text("Save"),
+                        StatefulBuilder(builder: (context, setState) {
+                          return Container(
+                            padding: EdgeInsets.all(20),
+                            color: Colors.white,
+                            // height: 300,
+                            child: Column(
+                              children: [
+                                DropdownButton(
+                                  value: model.newIssueDropDownValue,
+                                  items: [
+                                    "Backlog",
+                                    "In Progress",
+                                    "Underreview",
+                                    "Done"
+                                  ].map((e) {
+                                    return DropdownMenuItem(
+                                      value: e,
+                                      child: Text(e),
+                                    );
+                                  }).toList(),
+                                  onChanged: (v) {
+                                    model.newIssueDropDownValue = v;
+                                    model.notifyListeners();
+                                    print(v);
+                                    print(model.newIssueDropDownValue);
+                                    setState(() {});
+                                  },
                                 ),
-                              ),
-                            ],
-                          ),
-                        ),
+                                CustomTextField(
+                                  hintText: "title",
+                                  onChanged: (newValue) {
+                                    model.newIssueTitle = newValue;
+                                  },
+                                ),
+                                const SizedBox(
+                                  height: 20,
+                                ),
+                                CustomTextField(
+                                  hintText: "Description",
+                                  maxLines: 3,
+                                  onChanged: (newValue) {
+                                    model.newIssueDescription = newValue;
+                                  },
+                                ),
+                                ElevatedButton(
+                                  onPressed: () {
+                                    print(
+                                      model.newIssueDropDownValue!,
+                                    );
+                                    model.addIssue(
+                                      ticket: TicketModel(
+                                        title: model.newIssueTitle!,
+                                        description: model.newIssueDescription!,
+                                        createdAt: DateTime.now().toString(),
+                                        status: model.newIssueDropDownValue!,
+                                      ),
+                                    );
+                                  },
+                                  child: Container(
+                                    padding: const EdgeInsets.only(
+                                      top: 20,
+                                    ),
+                                    child: const Text("Save"),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          );
+                        }),
                       );
 
                       model.newIssueDropDownValue = null;

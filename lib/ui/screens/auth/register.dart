@@ -259,25 +259,26 @@ class SignUpScreen extends StatelessWidget {
                               // onTap: ()=>Get.offAll(()=>LoginScreen()),
                               child: RichText(
                                 text: TextSpan(
-                                    text: "Have an account? ",
-                                    style: Theme.of(context)
-                                        .textTheme
-                                        .bodyText2!
-                                        .copyWith(
-                                          fontSize: 13,
-                                        ),
-                                    children: <TextSpan>[
-                                      TextSpan(
-                                        text: "Sign In",
-                                        style: Theme.of(context)
-                                            .textTheme
-                                            .bodyText2!
-                                            .copyWith(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 14,
-                                            ),
-                                      )
-                                    ]),
+                                  text: "Have an account? ",
+                                  style: Theme.of(context)
+                                      .textTheme
+                                      .bodyText2!
+                                      .copyWith(
+                                        fontSize: 13,
+                                      ),
+                                  children: <TextSpan>[
+                                    TextSpan(
+                                      text: "Sign In",
+                                      style: Theme.of(context)
+                                          .textTheme
+                                          .bodyText2!
+                                          .copyWith(
+                                            fontWeight: FontWeight.bold,
+                                            fontSize: 14,
+                                          ),
+                                    )
+                                  ],
+                                ),
                               ),
                             )
                           ],
