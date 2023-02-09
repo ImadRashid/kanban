@@ -132,6 +132,7 @@ class KanbanBoard extends StatelessWidget {
                                         status: model.newIssueDropDownValue!,
                                       ),
                                     );
+                                    Navigator.pop(context);
                                   },
                                   child: Container(
                                     padding: const EdgeInsets.only(

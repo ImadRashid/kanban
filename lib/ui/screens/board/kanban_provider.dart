@@ -75,12 +75,11 @@ class KanbanBoardProvider extends BaseViewModel {
       } else if (ticket.status == "Done") {
         doneIssues.add(ticket);
       } else {}
+      showCustomSnackBar(
+          "Success", "Ticket has been Added to \"${ticket.status}\"");
     } catch (e) {
       print(e);
-      showCustomSnackBar(
-        "Error",
-        "$e",
-      );
+      showCustomSnackBar("Error", "$e");
     }
     setState(ViewState.idle);
     notifyListeners();
