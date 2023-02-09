@@ -87,7 +87,15 @@ jobs:
 ##
       - run: flutter pub get
       - run: flutter build apk
-
+##
+##  Upload to Firebase
+##
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
+        with:
+            appId: ${{secrets.APP_ID}}
+            serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+            groups: developer-group
+            file: build/app/outputs/flutter-apk/app-release.apk
 ##
 ## We are uploading the generated artifact so it is accessible to us anytime when we comeback to a specific Action which was run
 ## This step is important because if in future we need to see a past version of app, we won't need to revert code and re-compile again
