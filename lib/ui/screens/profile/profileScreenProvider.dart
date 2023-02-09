@@ -1,5 +1,5 @@
+import 'package:flutter/material.dart';
 import 'package:karbanboard/core/services/auth_services.dart';
-
 import '../../../core/others/base_view_model.dart';
 import '../../../locator.dart';
 
@@ -9,7 +9,7 @@ import '../../../locator.dart';
 class ProfileScreenProvider extends BaseViewModel {
   AuthService _auth = locator<AuthService>();
 
-  void logout() {
-    _auth.logout();
+  void logout(BuildContext context) async {
+    _auth.logout(context);
   }
 }

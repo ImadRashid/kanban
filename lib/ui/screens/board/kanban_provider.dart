@@ -1,11 +1,13 @@
 import 'package:appflowy_board/appflowy_board.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:karbanboard/core/enums/view_state.dart';
 import 'package:karbanboard/core/services/board_services.dart';
 import '../../../core/model/ticketModel.dart';
 import '../../../core/others/base_view_model.dart';
 import '../../../locator.dart';
 import '../../others/snackbars.dart';
+import 'detailScreen.dart';
 
 class KanbanBoardProvider extends BaseViewModel {
   String? newIssueTitle;
@@ -43,6 +45,23 @@ class KanbanBoardProvider extends BaseViewModel {
   List<AppFlowyGroupItem> inProgressIssues = [];
   List<AppFlowyGroupItem> doneIssues = [];
   List<AppFlowyGroupItem> underReviewIssues = [];
+
+  ///
+  /// Selected an Issue Function
+  ///
+  AppFlowyGroupItem? selectedIssue;
+  selectIssue(groupItem, context) async {
+    print("Item = ${groupItem.status.toLowerCase()}");
+    String groupName = groupItem.status.toLowerCase();
+    selectedIssue = groupItem;
+    // await Get.to(DetailScreen());
+    await Navigator.push(
+      context,
+      MaterialPageRoute(builder: (context) => DetailScreen()),
+    );
+    selectedIssue = null;
+  }
+
 ////
 
   addIssue({required TicketModel ticket}) async {
@@ -131,5 +150,15 @@ class KanbanBoardProvider extends BaseViewModel {
     controller.addGroup(done);
     controller.addGroup(underReview);
     controller.enableGroupDragging(false);
+  }
+
+  resetProvider() {
+    backlogIssues = [];
+    inProgressIssues = [];
+    doneIssues = [];
+    underReviewIssues = [];
+    newIssueTitle = null;
+    newIssueDescription = null;
+    newIssueDropDownValue = null;
   }
 }

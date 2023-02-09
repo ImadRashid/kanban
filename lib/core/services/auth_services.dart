@@ -1,6 +1,9 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:karbanboard/core/restart_app.dart';
+import 'package:karbanboard/ui/screens/board/kanban_provider.dart';
 import 'package:karbanboard/ui/screens/splash_screen.dart';
+import 'package:provider/provider.dart';
 import '../model/app_user.dart';
 import 'database_services.dart';
 
@@ -66,12 +69,15 @@ class AuthService {
     }
   }
 
-  void logout() async {
+  logout(context) async {
     try {
       await _auth.signOut();
       appUser = AppUser();
       isLogin = false;
+      Provider.of<KanbanBoardProvider>(context, listen: false).resetProvider();
       Get.offAll(SplashScreen());
-    } catch (e) {}
+    } catch (e) {
+      print(e);
+    }
   }
 }

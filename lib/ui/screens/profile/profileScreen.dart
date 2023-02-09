@@ -5,6 +5,8 @@ import 'package:karbanboard/core/others/base_view_model.dart';
 import 'package:karbanboard/ui/screens/profile/profileScreenProvider.dart';
 import 'package:provider/provider.dart';
 
+import '../../../core/restart_app.dart';
+
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
 
@@ -15,12 +17,13 @@ class ProfileScreen extends StatelessWidget {
         child:
             Consumer<ProfileScreenProvider>(builder: (context, model, child) {
           return Scaffold(
+            appBar: AppBar(),
             body: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 ElevatedButton(
                   onPressed: () {
-                    model.logout();
+                    model.logout(context);
                   },
                   child: Row(
                     mainAxisSize: MainAxisSize.min,
