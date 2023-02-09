@@ -6,4 +6,4 @@ A new Flutter project.
 
 Invite yourself to install the application via Firebase Distribution
 
-[link](https://appdistribution.firebase.dev/i/4b11d8e6c1519615)
+[link](https://appdistribution.firebase.dev/i/4b11d8e6c1519615){:target="_blank"}
