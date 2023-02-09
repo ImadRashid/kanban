@@ -36,7 +36,7 @@ class CustomTextField extends StatelessWidget {
         validator: validator,
         controller: controller,
         style: TextStyle(fontSize: 14),
-        cursorColor: Color(0xFF568C48),
+        // cursorColor: Color(0xFF568C48),
         // style: Theme.of(context).textTheme.bodyText1!,
         decoration: InputDecoration(
           fillColor: Theme.of(context).cardColor,
@@ -45,12 +45,12 @@ class CustomTextField extends StatelessWidget {
           hintText: '$hintText',
           prefixIcon: Icon(
             preFixIcon,
-            color: Color(0xFF568C48),
+            // color: Color(0xFF568C48),
           ),
           suffixIcon: sufFixIcon != null
               ? ImageIcon(
                   AssetImage(sufFixIcon),
-                  color: Color(0xFF568C48),
+                  // color: Color(0xFF568C48),
                 )
               : SizedBox(
                   height: 0,

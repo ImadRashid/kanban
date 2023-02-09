@@ -126,11 +126,9 @@ class SignUpScreen extends StatelessWidget {
                                 icon: model.isVisiblePassword
                                     ? const Icon(
                                         Icons.visibility_off,
-                                        color: Color(0xFF568C48),
                                       )
                                     : const Icon(
                                         Icons.visibility,
-                                        color: Color(0xFF568C48),
                                       ),
                               ),
                               textInputAction: TextInputAction.next,

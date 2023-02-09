@@ -15,13 +15,10 @@ class LoginScreen extends StatelessWidget {
     return ChangeNotifierProvider(
       create: (context) => AuthProvider(),
       child: Scaffold(
-        // backgroundColor: Theme.of(context).backgroundColor,
         body: Consumer<AuthProvider>(
           builder: (context, model, child) {
             return ModalProgressHUD(
-              progressIndicator: const CircularProgressIndicator(
-                color: Color(0xFF568C48),
-              ),
+              progressIndicator: const CircularProgressIndicator(),
               inAsyncCall: model.state == ViewState.busy,
               child: SingleChildScrollView(
                 child: SafeArea(
@@ -114,11 +111,9 @@ class LoginScreen extends StatelessWidget {
                                 icon: model.isVisiblePassword
                                     ? const Icon(
                                         Icons.visibility_off,
-                                        color: Color(0xFF568C48),
                                       )
                                     : const Icon(
                                         Icons.visibility,
-                                        color: Color(0xFF568C48),
                                       ),
                               ),
                               obscureText: model.isVisiblePassword,

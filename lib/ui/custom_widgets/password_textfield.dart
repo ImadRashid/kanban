@@ -39,13 +39,14 @@ class PasswordTextField extends StatelessWidget {
         obscureText: obscureText!,
         style: TextStyle(fontSize: 14),
         obscuringCharacter: "*",
-        // style: Theme.of(context).textTheme.bodyText2!,
         decoration: InputDecoration(
           contentPadding: EdgeInsets.symmetric(horizontal: 10, vertical: 10),
           fillColor: Theme.of(context).cardColor,
           filled: true,
           hintText: '$hintText',
-          prefixIcon: Icon(Icons.lock, color: Color(0xFF568C48)),
+          prefixIcon: Icon(
+            Icons.lock,
+          ),
           suffixIcon: suffixIcon,
           border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(7),

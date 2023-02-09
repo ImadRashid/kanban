@@ -13,7 +13,7 @@ class RectangularButton extends StatelessWidget {
     bool tablet = size.height > 926 && size.width > 428;
     return Material(
       borderRadius: BorderRadius.circular(7),
-      color: Colors.green,
+      color: Theme.of(context).primaryColor,
       child: InkWell(
         onTap: onPressed,
         child: Container(
