@@ -170,13 +170,13 @@ class KanbanBoard extends StatelessWidget {
   //   );
   // }
 
-  Widget _buildCard(item) {
+  Widget _buildCard(AppFlowyGroupItem item) {
     return BoardItemCard(item: item);
   }
 }
 
 class BoardItemCard extends StatefulWidget {
-  final BoardItemModel item;
+  final item;
   const BoardItemCard({
     required this.item,
     Key? key,
