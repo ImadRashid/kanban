@@ -28,6 +28,37 @@ class KanbanBoardProvider extends BaseViewModel {
   late AppFlowyBoardScrollController boardController;
 
   init() {
+    initializeBoardSettings();
+  }
+
+// list of issues
+
+  List<AppFlowyGroupItem> backlogIssues = [];
+  List<AppFlowyGroupItem> inProgressIssues = [];
+  List<AppFlowyGroupItem> doneIssues = [];
+  List<AppFlowyGroupItem> underReviewIssues = [];
+////
+
+  addIssue({required TicketModel issue, required String groupId}) {
+    if (groupId == "Backlog") {
+      backlogIssues.add(issue);
+    } else if (groupId == "In Progress") {
+      inProgressIssues.add(issue);
+    } else if (groupId == "Underreview") {
+      underReviewIssues.add(issue);
+    } else if (groupId == "Done") {
+      doneIssues.add(issue);
+    } else {}
+    notifyListeners();
+  }
+
+  uploadIssue() {}
+  fetchAllIssues() {}
+
+  ///
+  /// This is the board initialization Code
+  ///
+  initializeBoardSettings() {
     boardController = AppFlowyBoardScrollController();
     AppFlowyGroupData backlog = AppFlowyGroupData(
       id: "Backlog",
@@ -58,36 +89,14 @@ class KanbanBoardProvider extends BaseViewModel {
     controller.addGroup(underReview);
     controller.enableGroupDragging(false);
   }
-
-// list of issues
-
-  List<BoardItemModel> backlogIssues = [];
-  List<BoardItemModel> inProgressIssues = [];
-  List<BoardItemModel> doneIssues = [];
-  List<BoardItemModel> underReviewIssues = [];
-////
-
-  addNewCard() {}
-  addIssue({required BoardItemModel issue, required String groupId}) {
-    if (groupId == "Backlog") {
-      backlogIssues.add(issue);
-    } else if (groupId == "In Progress") {
-      inProgressIssues.add(issue);
-    } else if (groupId == "Underreview") {
-      underReviewIssues.add(issue);
-    } else if (groupId == "Done") {
-      doneIssues.add(issue);
-    } else {}
-    notifyListeners();
-  }
 }
 
-class BoardItemModel extends AppFlowyGroupItem {
+class TicketModel extends AppFlowyGroupItem {
   final String title;
   final String description;
   final String startTime;
 
-  BoardItemModel({
+  TicketModel({
     required this.title,
     required this.description,
     required this.startTime,
