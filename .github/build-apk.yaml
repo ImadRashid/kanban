@@ -1,0 +1,99 @@
+##
+##
+## Name of the CI/CD Pipeline displayed while execution
+##
+##
+name: Build APK
+
+##
+##
+## This is the trigger which will initiate our workflow
+##
+##
+
+on:
+##
+##
+## We are initializing workflow whenever we push new code to any branch that contains:
+## "v" e.g. v1.0.0, v0.0.1, etc.
+##
+##
+  push:
+    branches:
+      - 'main'
+  workflow_dispatch:
+
+
+
+##
+##
+## This is a job in our workflow, the name of job is "build-deploy"
+##
+##
+jobs:
+  build-deploy:
+
+##
+##
+## This is the OS on which we would like to run our job, we can choose windows, macOS or Linux
+##
+##
+    runs-on: ubuntu-latest
+
+
+    steps:
+
+##
+##
+## In this step, we checkout our MSQ-Wallet-App repo on our Machine
+##
+##
+      - uses: actions/checkout@v3
+##
+##
+## This step is used to download JAVA Binaries for making flutter work and also sign the apk file
+##
+##
+      - uses: actions/setup-java@v2
+        with:
+          distribution: "zulu"
+          java-version: "12.x"
+
+##
+##
+## This step is used add google-services.json, firebase_options.dart files to our project, 
+## remember we cannot push this file into repo for security reasons,
+## 
+      - name: Decode google-services.json
+        env: 
+            GOOGLE_SERVICES_JSON: ${{ secrets.GOOGLE_SERVICES_JSON }}
+        run: echo "$GOOGLE_SERVICES_JSON" > android/app/google-services.json
+      - name: Decode firebase_option
+        env:
+          firebase_options_dart: ${{secrets.FIREBASE_OPTION}}
+        run: echo "$firebase_options_dart" > lib/firebase_options.dart
+
+##
+## Configuring the flutter environment
+## 
+      - uses: subosito/flutter-action@v2
+        with:
+          flutter-version: "3.3.4"
+          channel: "stable"
+##
+##
+## Fetching flutter dependencies and building a release apk file
+##
+##
+      - run: flutter pub get
+      - run: flutter build apk --release
+
+##
+## We are uploading the generated artifact so it is accessible to us anytime when we comeback to a specific Action which was run
+## This step is important because if in future we need to see a past version of app, we won't need to revert code and re-compile again
+##
+##
+      - uses: actions/upload-artifact@v2
+        with:
+          name: release-apk
+          path: build/app/outputs/apk/release/app-release.apk
