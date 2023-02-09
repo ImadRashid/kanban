@@ -86,7 +86,7 @@ jobs:
 ##
 ##
       - run: flutter pub get
-      - run: flutter build apk --release
+      - run: flutter build apk
 
 ##
 ## We are uploading the generated artifact so it is accessible to us anytime when we comeback to a specific Action which was run
