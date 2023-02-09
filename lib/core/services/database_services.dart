@@ -22,21 +22,4 @@ class DatabaseService {
       return AppUser();
     }
   }
-
-  ///
-  /// add JIRA Card Issue Function - to be done
-  ///
-  // addUserProblem(UserProblem userProblem) async {
-  //   try {
-  //     await _ref
-  //         .collection("UserProblem")
-  //         // .doc(userProblem.helpeeId)
-  //         .doc(userProblem.problemId)
-  //         .set(userProblem.toJson());
-  //     return true;
-  //   } catch (e) {
-  //     print('Exception@userProblem ===> $e');
-  //     return false;
-  //   }
-  // }
 }

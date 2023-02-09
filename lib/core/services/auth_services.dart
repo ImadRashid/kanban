@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+import 'package:karbanboard/ui/screens/splash_screen.dart';
 import '../model/app_user.dart';
 import 'database_services.dart';
 
@@ -65,8 +67,11 @@ class AuthService {
   }
 
   void logout() async {
-    await _auth.signOut();
-    appUser = AppUser();
-    isLogin = false;
+    try {
+      await _auth.signOut();
+      appUser = AppUser();
+      isLogin = false;
+      Get.offAll(SplashScreen());
+    } catch (e) {}
   }
 }

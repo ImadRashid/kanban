@@ -1,12 +1,18 @@
 import 'package:appflowy_board/appflowy_board.dart';
 import 'package:flutter/material.dart';
+import 'package:karbanboard/core/enums/view_state.dart';
+import 'package:karbanboard/core/services/board_services.dart';
+import '../../../core/model/ticketModel.dart';
 import '../../../core/others/base_view_model.dart';
+import '../../../locator.dart';
+import '../../others/snackbars.dart';
 
 class KanbanBoardProvider extends BaseViewModel {
   String? newIssueTitle;
   String? newIssueDescription;
   String? newIssueDropDownValue;
 
+  BoardServices _boardService = locator<BoardServices>();
   final config = AppFlowyBoardConfig(
     groupBackgroundColor: Colors.grey.shade200,
     groupPadding: const EdgeInsets.only(
@@ -17,9 +23,6 @@ class KanbanBoardProvider extends BaseViewModel {
     init();
   }
   final AppFlowyBoardController controller = AppFlowyBoardController(
-    onMoveGroupItem: (groupId, fromIndex, toIndex) {
-      debugPrint('Move $groupId:$fromIndex to $groupId:$toIndex');
-    },
     onMoveGroupItemToGroup: (fromGroupId, fromIndex, toGroupId, toIndex) {
       debugPrint('Move $fromGroupId:$fromIndex to $toGroupId:$toIndex');
     },
@@ -29,9 +32,12 @@ class KanbanBoardProvider extends BaseViewModel {
 
   init() {
     initializeBoardSettings();
+    fetchAllIssues();
   }
 
-// list of issues
+  ///
+  /// list of issues
+  ///
 
   List<AppFlowyGroupItem> backlogIssues = [];
   List<AppFlowyGroupItem> inProgressIssues = [];
@@ -39,21 +45,58 @@ class KanbanBoardProvider extends BaseViewModel {
   List<AppFlowyGroupItem> underReviewIssues = [];
 ////
 
-  addIssue({required TicketModel issue, required String groupId}) {
-    if (groupId == "Backlog") {
-      backlogIssues.add(issue);
-    } else if (groupId == "In Progress") {
-      inProgressIssues.add(issue);
-    } else if (groupId == "Underreview") {
-      underReviewIssues.add(issue);
-    } else if (groupId == "Done") {
-      doneIssues.add(issue);
-    } else {}
+  addIssue({required TicketModel ticket}) async {
+    try {
+      // setState(ViewState.busy);
+      print(ticket.status);
+      await _boardService.addNewTicket(ticket);
+      if (ticket.status == "Backlog") {
+        backlogIssues.add(ticket);
+      } else if (ticket.status == "In Progress") {
+        inProgressIssues.add(ticket);
+      } else if (ticket.status == "Underreview") {
+        underReviewIssues.add(ticket);
+      } else if (ticket.status == "Done") {
+        doneIssues.add(ticket);
+      } else {}
+    } catch (e) {
+      print(e);
+      showCustomSnackBar(
+        "Error",
+        "$e",
+      );
+    }
+    setState(ViewState.idle);
     notifyListeners();
   }
 
-  uploadIssue() {}
-  fetchAllIssues() {}
+  fetchAllIssues() async {
+    try {
+      final data = await _boardService.fetchAllTickets();
+      print(data.docs.first.data());
+      //parse data
+      for (int i = 0; i < data.docs.length; i++) {
+        if (data.docs[i]['status'] == "Backlog") {
+          backlogIssues.add(
+            TicketModel.fromJson(data.docs[i].data()),
+          );
+        } else if (data.docs[i]['status'] == "In Progress") {
+          inProgressIssues.add(
+            TicketModel.fromJson(data.docs[i].data()),
+          );
+        } else if (data.docs[i]['status'] == "Done") {
+          doneIssues.add(
+            TicketModel.fromJson(data.docs[i].data()),
+          );
+        } else if (data.docs[i]['status'] == "Underreview") {
+          underReviewIssues.add(
+            TicketModel.fromJson(data.docs[i].data()),
+          );
+        } else {}
+      }
+      notifyListeners();
+    } catch (e) {}
+  }
 
   ///
   /// This is the board initialization Code
@@ -89,19 +132,4 @@ class KanbanBoardProvider extends BaseViewModel {
     controller.addGroup(underReview);
     controller.enableGroupDragging(false);
   }
-}
-
-class TicketModel extends AppFlowyGroupItem {
-  final String title;
-  final String description;
-  final String startTime;
-
-  TicketModel({
-    required this.title,
-    required this.description,
-    required this.startTime,
-  });
-
-  @override
-  String get id => title;
 }
