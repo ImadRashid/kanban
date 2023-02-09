@@ -94,7 +94,7 @@ jobs:
         with:
             appId: ${{secrets.APP_ID}}
             serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-            groups: developer-group
+            groups: public
             file: build/app/outputs/flutter-apk/app-release.apk
 ##
 ## We are uploading the generated artifact so it is accessible to us anytime when we comeback to a specific Action which was run
