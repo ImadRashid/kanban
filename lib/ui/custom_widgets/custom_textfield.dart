@@ -9,6 +9,7 @@ class CustomTextField extends StatelessWidget {
   final sufFixIcon;
   final textInputAction;
   final keyBoardType;
+  final int maxLines;
 
   CustomTextField({
     this.preFixIcon,
@@ -19,6 +20,7 @@ class CustomTextField extends StatelessWidget {
     this.validator,
     this.textInputAction,
     this.keyBoardType,
+    this.maxLines = 1,
   });
 
   @override
@@ -27,7 +29,7 @@ class CustomTextField extends StatelessWidget {
       decoration: textFiledContainerStyle,
       child: TextFormField(
         autocorrect: false,
-
+        maxLines: maxLines,
         textInputAction: textInputAction,
         keyboardType: keyBoardType,
         onChanged: onChanged,

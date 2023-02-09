@@ -52,7 +52,7 @@ class _SplashScreenState extends State<SplashScreen> {
       // check user is logged in and has created ID screen
       if (_authServices.isLogin) {
         // Navigate to Kanban Board
-        Get.offAll(const KanbanBoard());
+        Get.offAll(KanbanBoard());
       } else {
         //check user has onboarding
 

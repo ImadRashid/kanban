@@ -1,13 +1,17 @@
 import 'package:appflowy_board/appflowy_board.dart';
 import 'package:flutter/material.dart';
-
-import '../../../core/extensions/color.dart';
 import '../../../core/others/base_view_model.dart';
 
 class KanbanBoardProvider extends BaseViewModel {
+  String? newIssueTitle;
+  String? newIssueDescription;
+  String? newIssueDropDownValue;
+
   final config = AppFlowyBoardConfig(
-    groupBackgroundColor: HexColor.fromHex('#F7F8FC'),
-    // stretchGroupHeight: false,
+    groupBackgroundColor: Colors.grey.shade200,
+    groupPadding: const EdgeInsets.only(
+      left: 20,
+    ),
   );
   KanbanBoardProvider() {
     init();
@@ -28,20 +32,24 @@ class KanbanBoardProvider extends BaseViewModel {
     AppFlowyGroupData backlog = AppFlowyGroupData(
       id: "Backlog",
       name: "Backlog",
+      items: backlogIssues,
     );
 
     AppFlowyGroupData inProgress = AppFlowyGroupData(
       id: "In Progress",
       name: "In Progress",
+      items: inProgressIssues,
     );
 
     AppFlowyGroupData underReview = AppFlowyGroupData(
       id: "Underreview",
       name: "Underreview",
+      items: underReviewIssues,
     );
     AppFlowyGroupData done = AppFlowyGroupData(
       id: "Done",
       name: "Done",
+      items: doneIssues,
     );
 
     controller.addGroup(backlog);
@@ -53,9 +61,38 @@ class KanbanBoardProvider extends BaseViewModel {
 
 // list of issues
 
-  List<AppFlowyGroupItem> backlogIssues = [];
-  List<AppFlowyGroupItem> inProgress = [];
-  List<AppFlowyGroupItem> done = [];
-  List<AppFlowyGroupItem> underReview = [];
+  List<BoardItemModel> backlogIssues = [];
+  List<BoardItemModel> inProgressIssues = [];
+  List<BoardItemModel> doneIssues = [];
+  List<BoardItemModel> underReviewIssues = [];
 ////
+
+  addNewCard() {}
+  addIssue({required BoardItemModel issue, required String groupId}) {
+    if (groupId == "Backlog") {
+      backlogIssues.add(issue);
+    } else if (groupId == "In Progress") {
+      inProgressIssues.add(issue);
+    } else if (groupId == "Underreview") {
+      underReviewIssues.add(issue);
+    } else if (groupId == "Done") {
+      doneIssues.add(issue);
+    } else {}
+    notifyListeners();
+  }
+}
+
+class BoardItemModel extends AppFlowyGroupItem {
+  final String title;
+  final String description;
+  final String startTime;
+
+  BoardItemModel({
+    required this.title,
+    required this.description,
+    required this.startTime,
+  });
+
+  @override
+  String get id => title;
 }

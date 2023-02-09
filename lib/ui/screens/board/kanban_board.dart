@@ -1,138 +1,192 @@
 import 'package:appflowy_board/appflowy_board.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:karbanboard/ui/screens/board/kanban_provider.dart';
 import 'package:provider/provider.dart';
+import '../../custom_widgets/board_footer.dart';
+import '../../custom_widgets/custom_textfield.dart';
 
-class KanbanBoard extends StatefulWidget {
-  const KanbanBoard({Key? key}) : super(key: key);
-
-  @override
-  State<KanbanBoard> createState() => _KanbanBoardState();
-}
-
-class _KanbanBoardState extends State<KanbanBoard> {
+class KanbanBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    KanbanBoardProvider model = Provider.of<KanbanBoardProvider>(context);
-    return Scaffold(
-      appBar: AppBar(title: const Text("Kanban Board")),
-      body: AppFlowyBoard(
-        controller: model.controller,
-        cardBuilder: (context, group, groupItem) {
-          return AppFlowyGroupCard(
-            key: ValueKey(groupItem.id),
-            child: _buildCard(groupItem),
-            decoration: BoxDecoration(
-              color: Colors.green,
+    // KanbanBoardProvider model = Provider.of<KanbanBoardProvider>(context);
+
+    return Consumer<KanbanBoardProvider>(
+      builder: (context, model, child) {
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text("Kanban Board"),
+            actions: [
+              IconButton(
+                onPressed: () {},
+                icon: const Icon(
+                  Icons.person_2,
+                ),
+              ),
+            ],
+          ),
+          body: AppFlowyBoard(
+            controller: model.controller,
+            boardScrollController: model.boardController,
+            cardBuilder: (context, group, groupItem) {
+              return AppFlowyGroupCard(
+                key: ValueKey(groupItem.id),
+                child: _buildCard(groupItem),
+                decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(8),
+                ),
+              );
+            },
+            footerBuilder: (context, columnData) {
+              return SafeArea(
+                bottom: true,
+                child: BoardFooter(
+                  icon: const Icon(Icons.add, size: 20),
+                  title: const Text('Add New'),
+                  height: 50,
+                  margin: model.config.groupItemPadding,
+                  onAddButtonClick: () async {
+                    model.boardController.scrollToBottom(
+                      columnData.id,
+                    );
+
+                    model.newIssueDropDownValue = columnData.headerData.groupId;
+
+                    // customDailgue(columnTitle: columnData.id);
+                    await Get.bottomSheet(
+                      Container(
+                        padding: EdgeInsets.all(20),
+                        color: Colors.white,
+                        // height: 300,
+                        child: Column(
+                          children: [
+                            DropdownButton(
+                              value: model.newIssueDropDownValue,
+                              items: [
+                                "Backlog",
+                                "In Progress",
+                                "Underreview",
+                                "Done"
+                              ].map((e) {
+                                return DropdownMenuItem(
+                                  value: e,
+                                  child: Text(e),
+                                );
+                              }).toList(),
+                              onChanged: (v) {},
+                            ),
+                            CustomTextField(
+                              hintText: "title",
+                              onChanged: (newValue) {
+                                model.newIssueTitle = newValue;
+                              },
+                            ),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            CustomTextField(
+                              hintText: "Description",
+                              maxLines: 3,
+                              onChanged: (newValue) {
+                                model.newIssueDescription = newValue;
+                              },
+                            ),
+                            ElevatedButton(
+                              onPressed: () {
+                                model.addIssue(
+                                  groupId: columnData.id,
+                                  issue: BoardItemModel(
+                                    title: model.newIssueTitle!,
+                                    description: model.newIssueDescription!,
+                                    startTime: DateTime.now().toString(),
+                                  ),
+                                );
+                              },
+                              child: Container(
+                                padding: const EdgeInsets.only(
+                                  top: 20,
+                                ),
+                                child: const Text("Save"),
+                              ),
+                            ),
+                          ],
+                        ),
+                      ),
+                    );
+
+                    model.newIssueDropDownValue = null;
+                  },
+                ),
+              );
+            },
+            headerBuilder: (context, columnData) {
+              return AppFlowyGroupHeader(
+                icon: const Icon(Icons.lightbulb_circle),
+                title: Text(columnData.headerData.groupName),
+                height: 50,
+              );
+            },
+            groupConstraints: BoxConstraints(
+              maxWidth: MediaQuery.of(context).size.width - 80,
             ),
-          );
-        },
-        boardScrollController: model.boardController,
-        footerBuilder: (context, columnData) {
-          return SafeArea(
-            bottom: true,
-            child: AppFlowyGroupFooter(
-              icon: const Icon(Icons.add, size: 20),
-              title: const Text('Add New'),
-              height: 50,
-              margin: model.config.groupItemPadding,
-              onAddButtonClick: () {
-                // setState(() {
-                //   group1!.items.add(TextItem("Hello there"));
-                // });
-
-                model.boardController.scrollToBottom(
-                  columnData.id,
-                );
-
-                customDailgue(columnTitle: columnData.id);
-
-                // setState(() {
-                //   tempList.add(TextItem("added new"));
-                // });
-
-                // print(columnData.id.toString());
-
-                // AppFlowyGroupData(id: )
-              },
-            ),
-          );
-        },
-        headerBuilder: (context, columnData) {
-          return AppFlowyGroupHeader(
-            icon: const Icon(Icons.lightbulb_circle),
-            title: Text(columnData.headerData.groupName),
-            height: 50,
-          );
-        },
-        groupConstraints: const BoxConstraints.tightFor(width: 240),
-        config: model.config,
-      ),
+            config: model.config,
+          ),
+        );
+      },
     );
   }
 
-  customDailgue({final columnTitle}) {
-    var cardTitle;
-    showDialog(
-        context: context,
-        builder: (context) {
-          return Dialog(
-            child: Container(
-              height: MediaQuery.of(context).size.height / 2,
-              child: Column(children: [
-                Text("Add Card to ${columnTitle}"),
-                TextField(
-                  onChanged: (value) {
-                    cardTitle = value.toString();
-                  },
-                  decoration: InputDecoration(hintText: 'Enter Card Title'),
-                ),
-                TextButton(
-                    onPressed: () {
-                      setState(() {
-                        // tempList.add(TextItem(cardTitle));
-                      });
+  // customDailgue({final columnTitle}) {
+  //   var cardTitle;
+  //   showDialog(
+  //     context: context,
+  //     builder: (context) {
+  //       return Dialog(
+  //         child: Container(
+  //           height: MediaQuery.of(context).size.height / 2,
+  //           child: Column(children: [
+  //             Text("Add Card to ${columnTitle}"),
+  //             TextField(
+  //               onChanged: (value) {
+  //                 cardTitle = value.toString();
+  //               },
+  //               decoration: InputDecoration(hintText: 'Enter Card Title'),
+  //             ),
+  //             TextButton(
+  //               onPressed: () {
+  //                 setState(() {
+  //                   // tempList.add(TextItem(cardTitle));
+  //                 });
 
-                      Navigator.pop(context);
-                    },
-                    child: Text("Save"))
-              ]),
-            ),
-          );
-        });
-  }
+  //                 Navigator.pop(context);
+  //               },
+  //               child: Text("Save"),
+  //             )
+  //           ]),
+  //         ),
+  //       );
+  //     },
+  //   );
+  // }
 
-  Widget _buildCard(AppFlowyGroupItem item) {
-    if (item is TextItem) {
-      return Align(
-        alignment: Alignment.centerLeft,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 30),
-          child: Text(item.s),
-        ),
-      );
-    }
-
-    if (item is RichTextItem) {
-      return RichTextCard(item: item);
-    }
-
-    throw UnimplementedError();
+  Widget _buildCard(item) {
+    return BoardItemCard(item: item);
   }
 }
 
-class RichTextCard extends StatefulWidget {
-  final RichTextItem item;
-  const RichTextCard({
+class BoardItemCard extends StatefulWidget {
+  final BoardItemModel item;
+  const BoardItemCard({
     required this.item,
     Key? key,
   }) : super(key: key);
 
   @override
-  State<RichTextCard> createState() => _RichTextCardState();
+  State<BoardItemCard> createState() => _BoardItemCardState();
 }
 
-class _RichTextCardState extends State<RichTextCard> {
+class _BoardItemCardState extends State<BoardItemCard> {
   @override
   void initState() {
     super.initState();
@@ -154,31 +208,12 @@ class _RichTextCardState extends State<RichTextCard> {
             ),
             const SizedBox(height: 10),
             Text(
-              widget.item.subtitle,
+              widget.item.description,
               style: const TextStyle(fontSize: 12, color: Colors.grey),
-            )
+            ),
           ],
         ),
       ),
     );
   }
-}
-
-class TextItem extends AppFlowyGroupItem {
-  final String s;
-
-  TextItem(this.s);
-
-  @override
-  String get id => s;
-}
-
-class RichTextItem extends AppFlowyGroupItem {
-  final String title;
-  final String subtitle;
-
-  RichTextItem({required this.title, required this.subtitle});
-
-  @override
-  String get id => title;
 }

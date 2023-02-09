@@ -47,7 +47,7 @@ class AuthProvider extends BaseViewModel {
           passwordController.text,
         );
         if (login) {
-          Get.offAll(() => const KanbanBoard());
+          Get.offAll(() => KanbanBoard());
         }
       } catch (e) {
         print("$e, login error");
@@ -73,7 +73,7 @@ class AuthProvider extends BaseViewModel {
           nameController.text,
         );
         if (login) {
-          Get.offAll(() => const KanbanBoard());
+          Get.offAll(() => KanbanBoard());
         }
 
         // setState(ViewState.idle);
