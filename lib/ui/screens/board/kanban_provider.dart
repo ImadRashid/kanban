@@ -1,6 +1,5 @@
 import 'package:appflowy_board/appflowy_board.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:karbanboard/core/enums/view_state.dart';
 import 'package:karbanboard/core/services/board_services.dart';
 import '../../../core/model/ticketModel.dart';
