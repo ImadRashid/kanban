@@ -74,7 +74,6 @@ class AuthService {
       await _auth.signOut();
       appUser = AppUser();
       isLogin = false;
-      Provider.of<KanbanBoardProvider>(context, listen: false).resetProvider();
       Get.offAll(SplashScreen());
     } catch (e) {
       print(e);

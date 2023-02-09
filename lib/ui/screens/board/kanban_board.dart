@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:karbanboard/ui/screens/board/kanban_provider.dart';
 import 'package:karbanboard/ui/screens/profile/profileScreen.dart';
-import 'package:modal_progress_hud_nsn/modal_progress_hud_nsn.dart';
 import 'package:provider/provider.dart';
-import '../../../core/enums/view_state.dart';
 import '../../../core/model/ticketModel.dart';
 import '../../custom_widgets/board_footer.dart';
 import '../../custom_widgets/custom_textfield.dart';
@@ -13,165 +11,169 @@ import '../../custom_widgets/custom_textfield.dart';
 class KanbanBoard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Consumer<KanbanBoardProvider>(
-      builder: (context, model, child) {
-        return Scaffold(
-          appBar: AppBar(
-            title: const Text("Kanban Board"),
-            actions: [
-              IconButton(
-                onPressed: () {
-                  Get.to(
-                    ProfileScreen(),
-                  );
-                },
-                icon: const Icon(
-                  Icons.person_2,
-                ),
-              ),
-              IconButton(
-                onPressed: () async {
-                  await model.fetchAllIssues();
-                },
-                icon: Icon(Icons.refresh),
-              ),
-            ],
-          ),
-          body: AppFlowyBoard(
-            controller: model.controller,
-            boardScrollController: model.boardController,
-            // scrollController: ,
-            cardBuilder: (context, group, groupItem) {
-              return AppFlowyGroupCard(
-                key: ValueKey(groupItem.id),
-                // child: _buildCard(groupItem),
-                child: TicketCard(
-                  item: groupItem,
-                  onTap: () {
-                    model.selectIssue(groupItem, context);
-                  },
-                ),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(8),
-                ),
-              );
-            },
-            footerBuilder: (context, columnData) {
-              return SafeArea(
-                bottom: true,
-                child: BoardFooter(
-                  icon: const Icon(Icons.add, size: 20),
-                  title: const Text('Add New'),
-                  height: 50,
-                  margin: model.config.groupItemPadding,
-                  onAddButtonClick: () async {
-                    model.boardController.scrollToBottom(
-                      columnData.id,
+    return ChangeNotifierProvider(
+      create: (context) => KanbanBoardProvider(),
+      child: Consumer<KanbanBoardProvider>(
+        builder: (context, model, child) {
+          return Scaffold(
+            appBar: AppBar(
+              title: const Text("Kanban Board"),
+              actions: [
+                IconButton(
+                  onPressed: () {
+                    Get.to(
+                      ProfileScreen(),
                     );
-
-                    model.newIssueDropDownValue = columnData.headerData.groupId;
-
-                    // customDailgue(columnTitle: columnData.id);
-                    await Get.bottomSheet(
-                      Container(
-                        padding: EdgeInsets.all(20),
-                        color: Colors.white,
-                        // height: 300,
-                        child: Column(
-                          children: [
-                            DropdownButton(
-                              value: model.newIssueDropDownValue,
-                              items: [
-                                "Backlog",
-                                "In Progress",
-                                "Underreview",
-                                "Done"
-                              ].map((e) {
-                                return DropdownMenuItem(
-                                  value: e,
-                                  child: Text(e),
-                                );
-                              }).toList(),
-                              onChanged: (v) {
-                                model.newIssueDropDownValue = v;
-                                model.notifyListeners();
-                                print(v);
-                                print(model.newIssueDropDownValue);
-                              },
-                            ),
-                            CustomTextField(
-                              hintText: "title",
-                              onChanged: (newValue) {
-                                model.newIssueTitle = newValue;
-                              },
-                            ),
-                            const SizedBox(
-                              height: 20,
-                            ),
-                            CustomTextField(
-                              hintText: "Description",
-                              maxLines: 3,
-                              onChanged: (newValue) {
-                                model.newIssueDescription = newValue;
-                              },
-                            ),
-                            ElevatedButton(
-                              onPressed: () {
-                                print(
-                                  model.newIssueDropDownValue!,
-                                );
-                                model.addIssue(
-                                  ticket: TicketModel(
-                                    title: model.newIssueTitle!,
-                                    description: model.newIssueDescription!,
-                                    createdAt: DateTime.now().toString(),
-                                    status: model.newIssueDropDownValue!,
-                                  ),
-                                );
-                              },
-                              child: Container(
-                                padding: const EdgeInsets.only(
-                                  top: 20,
-                                ),
-                                child: const Text("Save"),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    );
-
-                    model.newIssueDropDownValue = null;
                   },
+                  icon: const Icon(
+                    Icons.person_2,
+                  ),
                 ),
-              );
-            },
-            headerBuilder: (context, columnData) {
-              return AppFlowyGroupHeader(
-                icon: const Icon(Icons.lightbulb_circle),
-                title: Text(columnData.headerData.groupName),
-                height: 50,
-              );
-            },
-            groupConstraints: BoxConstraints(
-              maxWidth: MediaQuery.of(context).size.width - 80,
+                IconButton(
+                  onPressed: () async {
+                    await model.fetchAllIssues();
+                  },
+                  icon: Icon(Icons.refresh),
+                ),
+              ],
             ),
-            config: model.config,
-          ),
-        );
-      },
+            body: AppFlowyBoard(
+              controller: model.controller,
+              boardScrollController: model.boardController,
+              // scrollController: ,
+              cardBuilder: (context, group, groupItem) {
+                return AppFlowyGroupCard(
+                  key: ValueKey(groupItem.id),
+                  // child: _buildCard(groupItem),
+                  child: TicketCard(
+                    item: groupItem,
+                    onTap: () {
+                      // model.selectIssue(groupItem, context);
+                    },
+                  ),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(8),
+                  ),
+                );
+              },
+              footerBuilder: (context, columnData) {
+                return SafeArea(
+                  bottom: true,
+                  child: BoardFooter(
+                    icon: const Icon(Icons.add, size: 20),
+                    title: const Text('Add New'),
+                    height: 50,
+                    margin: model.config.groupItemPadding,
+                    onAddButtonClick: () async {
+                      model.boardController.scrollToBottom(
+                        columnData.id,
+                      );
+
+                      model.newIssueDropDownValue =
+                          columnData.headerData.groupId;
+
+                      // customDailgue(columnTitle: columnData.id);
+                      await Get.bottomSheet(
+                        Container(
+                          padding: EdgeInsets.all(20),
+                          color: Colors.white,
+                          // height: 300,
+                          child: Column(
+                            children: [
+                              DropdownButton(
+                                value: model.newIssueDropDownValue,
+                                items: [
+                                  "Backlog",
+                                  "In Progress",
+                                  "Underreview",
+                                  "Done"
+                                ].map((e) {
+                                  return DropdownMenuItem(
+                                    value: e,
+                                    child: Text(e),
+                                  );
+                                }).toList(),
+                                onChanged: (v) {
+                                  model.newIssueDropDownValue = v;
+                                  model.notifyListeners();
+                                  print(v);
+                                  print(model.newIssueDropDownValue);
+                                },
+                              ),
+                              CustomTextField(
+                                hintText: "title",
+                                onChanged: (newValue) {
+                                  model.newIssueTitle = newValue;
+                                },
+                              ),
+                              const SizedBox(
+                                height: 20,
+                              ),
+                              CustomTextField(
+                                hintText: "Description",
+                                maxLines: 3,
+                                onChanged: (newValue) {
+                                  model.newIssueDescription = newValue;
+                                },
+                              ),
+                              ElevatedButton(
+                                onPressed: () {
+                                  print(
+                                    model.newIssueDropDownValue!,
+                                  );
+                                  model.addIssue(
+                                    ticket: TicketModel(
+                                      title: model.newIssueTitle!,
+                                      description: model.newIssueDescription!,
+                                      createdAt: DateTime.now().toString(),
+                                      status: model.newIssueDropDownValue!,
+                                    ),
+                                  );
+                                },
+                                child: Container(
+                                  padding: const EdgeInsets.only(
+                                    top: 20,
+                                  ),
+                                  child: const Text("Save"),
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      );
+
+                      model.newIssueDropDownValue = null;
+                    },
+                  ),
+                );
+              },
+              headerBuilder: (context, columnData) {
+                return AppFlowyGroupHeader(
+                  icon: const Icon(Icons.lightbulb_circle),
+                  title: Text(columnData.headerData.groupName),
+                  height: 50,
+                );
+              },
+              groupConstraints: BoxConstraints(
+                maxWidth: MediaQuery.of(context).size.width - 80,
+              ),
+              config: model.config,
+            ),
+          );
+        },
+      ),
     );
   }
-
-  // // customDailgue({final columnTitle}) {
-  // Widget _buildCard(AppFlowyGroupItem item) {
-  //   if (item is TicketModel) {
-  //     return TicketCard(item: item);
-  //   }
-  //   throw UnimplementedError();
-  // }
 }
+
+// // customDailgue({final columnTitle}) {
+// Widget _buildCard(AppFlowyGroupItem item) {
+//   if (item is TicketModel) {
+//     return TicketCard(item: item);
+//   }
+//   throw UnimplementedError();
+// }
 
 class TicketCard extends StatelessWidget {
   final item;

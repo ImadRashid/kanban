@@ -7,10 +7,10 @@ class DetailScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // KanbanBoardProvider model = Provider.of<KanbanBoardProvider>(context);
     return Consumer<KanbanBoardProvider>(
       builder: (context, model, child) {
         return Scaffold(
+          // appBar: AppBar()
           appBar: AppBar(),
           body: Column(
             children: [],

@@ -22,9 +22,10 @@ class KanbanBoardProvider extends BaseViewModel {
     ),
   );
   KanbanBoardProvider() {
+    print("Constructor Called");
     init();
   }
-  final AppFlowyBoardController controller = AppFlowyBoardController(
+  AppFlowyBoardController controller = AppFlowyBoardController(
     onMoveGroupItemToGroup: (fromGroupId, fromIndex, toGroupId, toIndex) {
       debugPrint('Move $fromGroupId:$fromIndex to $toGroupId:$toIndex');
     },
@@ -37,10 +38,6 @@ class KanbanBoardProvider extends BaseViewModel {
     fetchAllIssues();
   }
 
-  ///
-  /// list of issues
-  ///
-
   List<AppFlowyGroupItem> backlogIssues = [];
   List<AppFlowyGroupItem> inProgressIssues = [];
   List<AppFlowyGroupItem> doneIssues = [];
@@ -51,10 +48,11 @@ class KanbanBoardProvider extends BaseViewModel {
   ///
   AppFlowyGroupItem? selectedIssue;
   selectIssue(groupItem, context) async {
+    // controller.
     print("Item = ${groupItem.status.toLowerCase()}");
     String groupName = groupItem.status.toLowerCase();
     selectedIssue = groupItem;
-    // await Get.to(DetailScreen());
+    // Get.to(DetailScreen());
     await Navigator.push(
       context,
       MaterialPageRoute(builder: (context) => DetailScreen()),
