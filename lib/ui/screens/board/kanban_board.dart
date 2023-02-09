@@ -96,7 +96,7 @@ class KanbanBoard extends StatelessWidget {
                               onPressed: () {
                                 model.addIssue(
                                   groupId: columnData.id,
-                                  issue: BoardItemModel(
+                                  issue: TicketModel(
                                     title: model.newIssueTitle!,
                                     description: model.newIssueDescription!,
                                     startTime: DateTime.now().toString(),
@@ -138,59 +138,20 @@ class KanbanBoard extends StatelessWidget {
   }
 
   // customDailgue({final columnTitle}) {
-  //   var cardTitle;
-  //   showDialog(
-  //     context: context,
-  //     builder: (context) {
-  //       return Dialog(
-  //         child: Container(
-  //           height: MediaQuery.of(context).size.height / 2,
-  //           child: Column(children: [
-  //             Text("Add Card to ${columnTitle}"),
-  //             TextField(
-  //               onChanged: (value) {
-  //                 cardTitle = value.toString();
-  //               },
-  //               decoration: InputDecoration(hintText: 'Enter Card Title'),
-  //             ),
-  //             TextButton(
-  //               onPressed: () {
-  //                 setState(() {
-  //                   // tempList.add(TextItem(cardTitle));
-  //                 });
-
-  //                 Navigator.pop(context);
-  //               },
-  //               child: Text("Save"),
-  //             )
-  //           ]),
-  //         ),
-  //       );
-  //     },
-  //   );
-  // }
-
   Widget _buildCard(AppFlowyGroupItem item) {
-    return BoardItemCard(item: item);
+    if (item is TicketModel) {
+      return TicketCard(item: item);
+    }
+    throw UnimplementedError();
   }
 }
 
-class BoardItemCard extends StatefulWidget {
-  final item;
-  const BoardItemCard({
+class TicketCard extends StatelessWidget {
+  final TicketModel item;
+  TicketCard({
     required this.item,
     Key? key,
   }) : super(key: key);
-
-  @override
-  State<BoardItemCard> createState() => _BoardItemCardState();
-}
-
-class _BoardItemCardState extends State<BoardItemCard> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -202,13 +163,13 @@ class _BoardItemCardState extends State<BoardItemCard> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              widget.item.title,
+              item.title,
               style: const TextStyle(fontSize: 14),
               textAlign: TextAlign.left,
             ),
             const SizedBox(height: 10),
             Text(
-              widget.item.description,
+              item.description,
               style: const TextStyle(fontSize: 12, color: Colors.grey),
             ),
           ],
