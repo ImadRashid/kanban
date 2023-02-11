@@ -29,12 +29,6 @@ class KanbanBoard extends StatelessWidget {
                     Icons.person_2,
                   ),
                 ),
-                IconButton(
-                  onPressed: () async {
-                    await model.fetchAllIssues();
-                  },
-                  icon: Icon(Icons.refresh),
-                ),
               ],
             ),
             body: AppFlowyBoard(

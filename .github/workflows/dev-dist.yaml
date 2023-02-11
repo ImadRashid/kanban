@@ -1,9 +1,9 @@
-##
+
 ##
 ## Name of the CI/CD Pipeline displayed while execution
 ##
-##
-name: Build APK(unsigned) & Release Publicly on firebase
+
+name: Build APK & Distribute to Developers on Firebase Dist..
 
 ##
 ## This is the trigger which will initiate our workflow
@@ -18,8 +18,7 @@ on:
 ##
   push:
     branches:
-      - 'main'
-      # - 'v*'
+      - 'v*'
 
 ## A manual button to trigger workflow
 
@@ -92,13 +91,14 @@ jobs:
 ##
 ##  Upload to Firebase
 ##
-      - uses: wzieba/Firebase-Distribution-Github-Action@v1
+      - if: contains(github.event.head_commit.message, 'dev-release')
+        uses: wzieba/Firebase-Distribution-Github-Action@v1
         with:
-          appId: ${{secrets.APP_ID}}
-          token: ${{secrets.FIREBASE_TOKEN}}
-          # serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
-          groups: public
-          file: build/app/outputs/flutter-apk/app-release.apk
+            appId: ${{secrets.APP_ID}}
+            token: ${{secrets.FIREBASE_TOKEN}}
+            # serviceCredentialsFileContent: ${{ secrets.CREDENTIAL_FILE_CONTENT }}
+            groups: developer-group
+            file: build/app/outputs/flutter-apk/app-release.apk
 ##
 ## We are uploading the generated artifact so it is accessible to us anytime when we comeback to a specific Action which was run
 ## This step is important because if in future we need to see a past version of app, we won't need to revert code and re-compile again
